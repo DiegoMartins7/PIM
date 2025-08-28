@@ -37,7 +37,7 @@ public class TecService {
         return tecRepository.save(tec);
     }
 
-    public TecResponseDto updateTec(String id, UpdateTecDto dto) {
+    public TecResponseDto updateTec(UUID id, UpdateTecDto dto) {
         var tec = tecRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Técnico não encontrado!"));
 
@@ -50,14 +50,14 @@ public class TecService {
         return new TecResponseDto(
                 tec.getId(),
                 tec.getName(),
+                tec.getEmail(),
                 tec.getPermission(),
                 tec.getTecLevel()
         );
     }
 
     @Transactional
-    public void deleteTec(String id) {
-        UUID uuid = UUID.fromString(id);
+    public void deleteTec(UUID id) {
         if (!tecRepository.existsById(id)) {
             throw new RuntimeException("Tecnico não encontrado!");
         }
@@ -73,7 +73,7 @@ public class TecService {
         List<TecResponseDto> response = new ArrayList<>();
 
         for (TecEntity tec1 : tec) {
-            TecResponseDto dto = new TecResponseDto(tec1.getId(), tec1.getName(), tec1.getPermission(), tec1.getTecLevel());
+            TecResponseDto dto = new TecResponseDto(tec1.getId(), tec1.getName(), tec1.getEmail(), tec1.getPermission(), tec1.getTecLevel());
             response.add(dto);
         }
         return response;

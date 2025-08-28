@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tec")
@@ -21,47 +22,48 @@ public class TecController {
         this.tecService = tecService;
     }
 
-    //Criar Tec
+    //Criar Tecnico
     @PostMapping("/register")
-    public ResponseEntity<TecResponseDto> createTec(@RequestBody TecDto tecDto){
+    public ResponseEntity<TecResponseDto> registerTec(@RequestBody TecDto tecDto){
         var tec = tecService.registerTec(tecDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new TecResponseDto(tec.getId(), tec.getEmail(), tec.getPermission(), tec.getTecLevel()));
+                .body(new TecResponseDto(tec.getId(), tec.getName(), tec.getEmail(), tec.getPermission(), tec.getTecLevel()));
     }
 
-    //Alterar Tec
+    //Alterar Tecnico
     @PutMapping("/update/{id}")
-    public ResponseEntity<TecResponseDto> updateTec(@PathVariable String id, @RequestBody UpdateTecDto updateDto) {
+    public ResponseEntity<TecResponseDto> updateTec(@PathVariable UUID id, @RequestBody UpdateTecDto updateDto) {
         var updatedTec = tecService.updateTec(id, updateDto);
         return ResponseEntity.ok(updatedTec);
     }
 
-    @DeleteMapping("/delete/{idtec}")
-    public ResponseEntity<MessageResponseDto> deleteTec(@PathVariable String idtec) {
+    //Deletar Tecnico
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<MessageResponseDto> deleteTec(@PathVariable UUID id) {
         try {
-            tecService.deleteTec(idtec);
-            return ResponseEntity.ok(new MessageResponseDto("Usuário Deletado com sucesso!"));
+            tecService.deleteTec(id);
+            return ResponseEntity.ok(new MessageResponseDto("Tecnico Deletado com sucesso!"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new MessageResponseDto(e.getMessage()));
         }
     }
 
-    //Buscar todos os Tecs
+    //Buscar todos os Tecnicos
     @GetMapping("/consulta/all")
     public ResponseEntity<List<TecResponseDto>> getAllTec() {
         List<TecResponseDto> tec = tecService.getAllTec();
         return ResponseEntity.ok(tec);
     }
 
-    //Buscar Tec
+    //Buscar Tecnico por nome
     @GetMapping("/consulta/{name}")
     public ResponseEntity<TecResponseDto> findByName(@PathVariable String name) {
         var tec = tecService.findByName(name);
 
         if (tec != null) {
             return ResponseEntity.ok(
-                    new TecResponseDto(tec.getId(), tec.getName(), tec.getPermission(), tec.getTecLevel())
+                    new TecResponseDto(tec.getId(), tec.getName(), tec.getName(), tec.getPermission(), tec.getTecLevel())
             );
         } else {
             return ResponseEntity.notFound().build();

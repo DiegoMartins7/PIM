@@ -36,7 +36,7 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public ClientResponseDto updateClient(String id, UpdateClientDto dto) {
+    public ClientResponseDto updateClient(UUID id, UpdateClientDto dto) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"));
 
@@ -55,8 +55,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void deleteClient(String id) {
-        UUID uuid = UUID.fromString(id);
+    public void deleteClient(UUID id) {
         if (!clientRepository.existsById(id)) {
             throw new RuntimeException("Cliente não encontrado!");
         }

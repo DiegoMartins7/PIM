@@ -20,7 +20,7 @@ public class AuthService {
     }
 
     public Optional<TecEntity> authenticateTec(AuthTecDto authTecDto) {
-        return tecRepository.findByName(authTecDto.email())
+        return tecRepository.findByEmail(authTecDto.email())
                 .filter(tec -> passwordEncoder.matches(authTecDto.password(), tec.getPassword()));
     }
 }

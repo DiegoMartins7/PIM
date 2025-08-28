@@ -31,13 +31,13 @@ public class AuthTecController {
         Optional<TecEntity> authenticatedTec = authService.authenticateTec(authTecDto);
 
         if (authenticatedTec.isPresent()) {
-            TecEntity user = authenticatedTec.get();
+            TecEntity tec = authenticatedTec.get();
 
-            String token = jwtUtil.gererateToken(user.getEmail(), user.getPermission().name());
+            String token = jwtUtil.gererateToken(tec.getEmail(), tec.getPermission().name());
 
             return ResponseEntity.ok()
                     .header("Authorization", "Bearer " + token)
-                    .body(new AuthTecResponseDto("Login realizado com sucesso", user.getPermission()));
+                    .body(new AuthTecResponseDto("Login realizado com sucesso", tec.getPermission()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new AuthTecResponseDto("Credenciais inválidas", null));
