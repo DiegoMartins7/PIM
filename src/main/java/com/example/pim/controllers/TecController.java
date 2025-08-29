@@ -1,5 +1,6 @@
 package com.example.pim.controllers;
 
+import com.example.pim.models.dtos.ClientDtos.ClientResponseDto;
 import com.example.pim.models.dtos.MessageResponseDto;
 import com.example.pim.models.dtos.TecDtos.TecDto;
 import com.example.pim.models.dtos.TecDtos.TecResponseDto;
@@ -49,13 +50,6 @@ public class TecController {
         }
     }
 
-    //Buscar todos os Tecnicos
-    @GetMapping("/consulta/all")
-    public ResponseEntity<List<TecResponseDto>> getAllTec() {
-        List<TecResponseDto> tec = tecService.getAllTec();
-        return ResponseEntity.ok(tec);
-    }
-
     //Buscar Tecnico por nome
     @GetMapping("/consulta/{name}")
     public ResponseEntity<TecResponseDto> findByName(@PathVariable String name) {
@@ -68,5 +62,26 @@ public class TecController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    //Buscar Tecnico por id
+    @GetMapping("/consulta/{id}")
+    public ResponseEntity<TecResponseDto> findById(@PathVariable UUID id) {
+        var tec = tecService.findById(id);
+
+        if (tec != null) {
+            return ResponseEntity.ok(
+                    new TecResponseDto(tec.getId(), tec.getName(), tec.getName(), tec.getPermission(), tec.getTecLevel())
+            );
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //Buscar todos os Tecnicos
+    @GetMapping("/consulta/all")
+    public ResponseEntity<List<TecResponseDto>> getAllTec() {
+        List<TecResponseDto> tec = tecService.getAllTec();
+        return ResponseEntity.ok(tec);
     }
 }

@@ -26,6 +26,7 @@ public class TecService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //Cadastrar Tecnico
     public TecEntity registerTec(TecDto dto) {
         TecEntity tec = new TecEntity();
         tec.setEmail(dto.email());
@@ -37,6 +38,7 @@ public class TecService {
         return tecRepository.save(tec);
     }
 
+    //Alterar Tecnico
     public TecResponseDto updateTec(UUID id, UpdateTecDto dto) {
         var tec = tecRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Técnico não encontrado!"));
@@ -56,6 +58,7 @@ public class TecService {
         );
     }
 
+    //Deletar Tecnico
     @Transactional
     public void deleteTec(UUID id) {
         if (!tecRepository.existsById(id)) {
@@ -64,8 +67,13 @@ public class TecService {
         tecRepository.deleteById(id);
     }
 
+    //Buscar Tecnico por nome
     public TecEntity findByName(String name) {
         return tecRepository.findByName(name).orElse(null);
+    }
+
+    public TecEntity findById(UUID id) {
+        return tecRepository.findById(id).orElse(null);
     }
 
     public List<TecResponseDto> getAllTec() {

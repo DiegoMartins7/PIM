@@ -12,16 +12,16 @@ public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
-    @Column(nullable = false, length = 150)
+    @Column(name = "name_client", nullable = false, length = 150)
     String name;
-    @Column(unique = true, nullable = false, length = 200)
+    @Column(name = "email_client", unique = true, nullable = false, length = 200)
     String email;
-    @Column(nullable = false)
+    @Column(name = "passaword_client", nullable = false)
     String password;
-    @Column
+    @Column(name = "number_client")
     Integer number;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "sector_client", nullable = false)
     SectorEnum sector;
 
     public ClientEntity() {

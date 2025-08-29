@@ -25,6 +25,7 @@ public class ClientService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //Cadastrar um Cliente
     public ClientEntity registerClient(ClientDto dto) {
         ClientEntity client = new ClientEntity();
         client.setEmail(dto.email());
@@ -36,6 +37,7 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    //Alterar um Cliente
     public ClientResponseDto updateClient(UUID id, UpdateClientDto dto) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"));
@@ -54,6 +56,7 @@ public class ClientService {
         );
     }
 
+    //Deletar um Cliente
     @Transactional
     public void deleteClient(UUID id) {
         if (!clientRepository.existsById(id)) {
@@ -62,10 +65,17 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
+    //Procurar Cliente por nome
     public ClientEntity findByName(String name) {
-        return clientRepository.findByName(name).orElse(null);
+        return clientRepository.findByNameIgnoreCase(name).orElse(null);
     }
 
+    //Procurar Cliente por id
+    public ClientEntity findById(UUID id) {
+        return clientRepository.findById(id).orElse(null);
+    }
+
+    //Procurar todos o clientes
     public List<ClientResponseDto> getAllClient() {
         List<ClientEntity> client = clientRepository.findAll();
         List<ClientResponseDto> response = new ArrayList<>();

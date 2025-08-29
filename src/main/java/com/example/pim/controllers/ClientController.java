@@ -49,14 +49,7 @@ public class ClientController {
         }
     }
 
-    //Buscar todos os Clientes
-    @GetMapping("/consulta/all")
-    public ResponseEntity<List<ClientResponseDto>> getAllClient() {
-        List<ClientResponseDto> client = clientService.getAllClient();
-        return ResponseEntity.ok(client);
-    }
-
-    //Buscar Cliente
+    //Buscar Clientes por nome
     @GetMapping("/consulta/{name}")
     public ResponseEntity<ClientResponseDto> findByName(@PathVariable String name) {
         var client = clientService.findByName(name);
@@ -68,5 +61,26 @@ public class ClientController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    //Buscar Clientes por id
+    @GetMapping("/consulta/{id}")
+    public ResponseEntity<ClientResponseDto> findById(@PathVariable UUID id) {
+        var client = clientService.findById(id);
+
+        if (client != null) {
+            return ResponseEntity.ok(
+                    new ClientResponseDto(client.getId(), client.getName(), client.getSector(), client.getNumber())
+            );
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //Buscar todos os Clientes
+    @GetMapping("/consulta/all")
+    public ResponseEntity<List<ClientResponseDto>> getAllClient() {
+        List<ClientResponseDto> client = clientService.getAllClient();
+        return ResponseEntity.ok(client);
     }
 }
