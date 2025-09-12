@@ -1,28 +1,29 @@
 package com.example.pim.models.entities;
 
-import com.example.pim.models.enums.TecEnums.PermissionEnum;
+import com.example.pim.models.enums.PermissionEnum;
 import com.example.pim.models.enums.TecEnums.TecLevelEnum;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.UUID;
 
 @Entity
+@Table(name = "tec")
 public class TecEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id_tec",unique = true, nullable = false)
     UUID id;
-    @Column(nullable = false, length = 150)
+    @Column(name = "name_tec", nullable = false, length = 150)
     String name;
-    @Column(unique = true, nullable = false, length = 200)
+    @Column(name = "email_tec", unique = true, nullable = false, length = 200)
     String email;
-    @Column(nullable = false)
+    @Column(name = "password_tec", nullable = false)
     String password;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "permission_tec", nullable = false)
     PermissionEnum permission;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "level_tec", nullable = false)
     TecLevelEnum tecLevel;
 
     public TecEntity() {

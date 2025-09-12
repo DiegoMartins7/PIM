@@ -22,46 +22,46 @@ import java.util.Optional;
 public class AuthController {
 
     private final AuthService authService;
-    private final JwtUtil jwtUtil;
 
-    public AuthController(AuthService authService, JwtUtil jwtUtil) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login/tec")
-    public ResponseEntity<AuthTecResponseDto> login(@RequestBody AuthTecDto authTecDto) {
-        Optional<TecEntity> authenticated = authService.authenticateTec(authTecDto);
+    public ResponseEntity<AuthTecResponseDto> loginTec(@RequestBody AuthTecDto authTecDto) {
+        AuthTecResponseDto response = authService.loginTec(authTecDto);
 
-        if (authenticated.isPresent()) {
-            TecEntity tec = authenticated.get();
-
-            String token = jwtUtil.gererateToken(tec.getEmail(), tec.getPermission().name());
+        if (response.token() != null) {
+            AuthTecResponseDto bodyResponse = new AuthTecResponseDto(
+                    response.message(),
+                    response.permission(),
+                    null
+            );
 
             return ResponseEntity.ok()
-                    .header("Authorization", "Bearer " + token)
-                    .body(new AuthTecResponseDto("Login realizado com sucesso", tec.getPermission()));
+                    .header("Authorization", "Bearer " + response.token()) // token no header
+                    .body(bodyResponse);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthTecResponseDto("Credenciais inválidas", null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 
     @PostMapping("/login/client")
-    public ResponseEntity<AuthClientResponseDto> login(@RequestBody AuthClientDto authClientDto) {
-        Optional<ClientEntity> authenticated = authService.authenticateClient(authClientDto);
+    public ResponseEntity<AuthClientResponseDto> loginClient(@RequestBody AuthClientDto authClientDto) {
+        AuthClientResponseDto response = authService.loginClient(authClientDto);
 
-        if (authenticated.isPresent()) {
-            ClientEntity client = authenticated.get();
-
-            String token = jwtUtil.gererateToken(client.getEmail(), client.getSector().name());
+        if (response.token() != null) {
+            AuthClientResponseDto bodyResponse = new AuthClientResponseDto(
+                    response.message(),
+                    response.sector(),
+                    null
+            );
 
             return ResponseEntity.ok()
-                    .header("Authorization", "Bearer " + token)
-                    .body(new AuthClientResponseDto("Login realizado com sucesso", client.getSector().name()));
+                    .header("Authorization", "Bearer " + response.token()) // token no header
+                    .body(bodyResponse);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthClientResponseDto("Credenciais inválidas", null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 }

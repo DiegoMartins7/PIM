@@ -32,7 +32,7 @@ public class ClientService {
         client.setPassword(passwordEncoder.encode(dto.password()));
         client.setName(dto.name());
         client.setNumber(dto.number());
-        client.setSector(SectorEnum.COMERCIAL);
+        client.setSector(SectorEnum.COMMERCIAL);
 
         return clientRepository.save(client);
     }

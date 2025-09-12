@@ -1,7 +1,7 @@
 package com.example.pim.models.enums.CalledEnums;
 
 public enum CalledStatusEnum {
-    ABERTO,
-    AGENDADO,
-    FINALIZADO
+    OPEN,
+    IN_PROGRESS,
+    FINISHED
 }

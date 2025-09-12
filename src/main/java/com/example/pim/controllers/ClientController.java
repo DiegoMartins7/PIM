@@ -50,7 +50,7 @@ public class ClientController {
     }
 
     //Buscar Clientes por nome
-    @GetMapping("/consulta/{name}")
+    @GetMapping("/consultation/{name}")
     public ResponseEntity<ClientResponseDto> findByName(@PathVariable String name) {
         var client = clientService.findByName(name);
 
@@ -64,7 +64,7 @@ public class ClientController {
     }
 
     //Buscar Clientes por id
-    @GetMapping("/consulta/{id}")
+    @GetMapping("/consultation/{id}")
     public ResponseEntity<ClientResponseDto> findById(@PathVariable UUID id) {
         var client = clientService.findById(id);
 
@@ -78,7 +78,7 @@ public class ClientController {
     }
 
     //Buscar todos os Clientes
-    @GetMapping("/consulta/all")
+    @GetMapping("/consultation/all")
     public ResponseEntity<List<ClientResponseDto>> getAllClient() {
         List<ClientResponseDto> client = clientService.getAllClient();
         return ResponseEntity.ok(client);

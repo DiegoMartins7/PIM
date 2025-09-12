@@ -8,9 +8,11 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Entity
+@Table(name = "client")
 public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id_client",unique = true, nullable = false)
     UUID id;
     @Column(name = "name_client", nullable = false, length = 150)
     String name;

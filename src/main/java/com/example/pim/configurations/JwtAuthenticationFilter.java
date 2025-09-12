@@ -27,6 +27,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getServletPath();
+        if (path.startsWith("/auth/")) { // ignora login
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -42,11 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 null,
                                 List.of(new SimpleGrantedAuthority("ROLE_" + role))
                         );
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }

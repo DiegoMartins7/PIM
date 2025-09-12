@@ -51,7 +51,7 @@ public class TecController {
     }
 
     //Buscar Tecnico por nome
-    @GetMapping("/consulta/{name}")
+    @GetMapping("/consultation/{name}")
     public ResponseEntity<TecResponseDto> findByName(@PathVariable String name) {
         var tec = tecService.findByName(name);
 
@@ -65,7 +65,7 @@ public class TecController {
     }
 
     //Buscar Tecnico por id
-    @GetMapping("/consulta/{id}")
+    @GetMapping("/consultation/{id}")
     public ResponseEntity<TecResponseDto> findById(@PathVariable UUID id) {
         var tec = tecService.findById(id);
 
@@ -79,7 +79,7 @@ public class TecController {
     }
 
     //Buscar todos os Tecnicos
-    @GetMapping("/consulta/all")
+    @GetMapping("/consultation/all")
     public ResponseEntity<List<TecResponseDto>> getAllTec() {
         List<TecResponseDto> tec = tecService.getAllTec();
         return ResponseEntity.ok(tec);
