@@ -1,4 +1,4 @@
-package com.example.pim.models.enums.TecEnums;
+package com.example.pim.models.enums;
 
 public enum PermissionEnum {
     ADMIN,

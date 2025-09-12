@@ -5,37 +5,56 @@ import com.example.pim.models.enums.CalledEnums.CalledType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "called")
 public class CalledEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_called",unique = true, nullable = false)
-    UUID id;
+    private UUID id;
     @Column(name = "descripition_called", nullable = false, length = 1000)
-    String description;
+    private String description;
     @Enumerated(EnumType.STRING)
     @Column(name = "status_called", nullable = false)
-    CalledStatusEnum statusCalled;
-    @Column(name = "data_abertura_chamado", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime dataAberturaChamado;
-    @Column(name = "data_fechamento_chamado", nullable = true)
-    private LocalDateTime dataFechamentoChamado;
+    private CalledStatusEnum statusCalled;
+    @Column(name = "opening_date_call", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime openingDateCall;
+    @Column(name = "closing_date_call", nullable = true)
+    private LocalDateTime closingDateCall;
+    @Column(name = "scheduling_date_call", nullable = true)
+    private LocalDateTime callSchedulingDate;
     @Enumerated(EnumType.STRING)
     @Column(name = "type_called", nullable = false)
-    CalledType type;
+    CalledType typeCall;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "client_id", nullable = false)
+    private ClientEntity client;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tec_id", nullable = false)
+    private TecEntity tec;
+    @OneToMany(mappedBy = "called", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AnswerTheCallEntity> answers = new ArrayList<>();
+
 
     public CalledEntity() {
+        this.openingDateCall = LocalDateTime.now();
+        this.statusCalled = CalledStatusEnum.OPEN;
     }
 
-    public CalledEntity(UUID id, String description, CalledStatusEnum statusCalled, LocalDateTime dataAberturaChamado, LocalDateTime dataFechamentoChamado, CalledType type) {
-        this.id = id;
-        this.description = description;
-        this.statusCalled = statusCalled;
-        this.dataAberturaChamado = dataAberturaChamado;
-        this.dataFechamentoChamado = dataFechamentoChamado;
-        this.type = type;
+    // Adicionar resposta
+    public void addAnswer(AnswerTheCallEntity answer) {
+        answers.add(answer);
+        answer.setCalled(this);
+        this.statusCalled = CalledStatusEnum.IN_PROGRESS;
+    }
+
+    public void closeCall() {
+        this.closingDateCall = LocalDateTime.now();
+        this.statusCalled = CalledStatusEnum.FINISHED;
     }
 
     public UUID getId() {
@@ -62,27 +81,59 @@ public class CalledEntity {
         this.statusCalled = statusCalled;
     }
 
-    public LocalDateTime getDataAberturaChamado() {
-        return dataAberturaChamado;
+    public LocalDateTime getOpeningDateCall() {
+        return openingDateCall;
     }
 
-    public void setDataAberturaChamado(LocalDateTime dataAberturaChamado) {
-        this.dataAberturaChamado = dataAberturaChamado;
+    public void setOpeningDateCall(LocalDateTime openingDateCall) {
+        this.openingDateCall = openingDateCall;
     }
 
-    public LocalDateTime getDataFechamentoChamado() {
-        return dataFechamentoChamado;
+    public LocalDateTime getClosingDateCall() {
+        return closingDateCall;
     }
 
-    public void setDataFechamentoChamado(LocalDateTime dataFechamentoChamado) {
-        this.dataFechamentoChamado = dataFechamentoChamado;
+    public void setClosingDateCall(LocalDateTime closingDateCall) {
+        this.closingDateCall = closingDateCall;
     }
 
-    public CalledType getType() {
-        return type;
+    public LocalDateTime getCallSchedulingDate() {
+        return callSchedulingDate;
     }
 
-    public void setType(CalledType type) {
-        this.type = type;
+    public void setCallSchedulingDate(LocalDateTime callSchedulingDate) {
+        this.callSchedulingDate = callSchedulingDate;
+    }
+
+    public CalledType getTypeCall() {
+        return typeCall;
+    }
+
+    public void setTypeCall(CalledType typeCall) {
+        this.typeCall = typeCall;
+    }
+
+    public ClientEntity getClient() {
+        return client;
+    }
+
+    public void setClient(ClientEntity client) {
+        this.client = client;
+    }
+
+    public TecEntity getTec() {
+        return tec;
+    }
+
+    public void setTec(TecEntity tec) {
+        this.tec = tec;
+    }
+
+    public List<AnswerTheCallEntity> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerTheCallEntity> answers) {
+        this.answers = answers;
     }
 }

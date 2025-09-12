@@ -4,7 +4,7 @@ import com.example.pim.models.dtos.TecDtos.TecDto;
 import com.example.pim.models.dtos.TecDtos.TecResponseDto;
 import com.example.pim.models.dtos.TecDtos.UpdateTecDto;
 import com.example.pim.models.entities.TecEntity;
-import com.example.pim.models.enums.TecEnums.PermissionEnum;
+import com.example.pim.models.enums.PermissionEnum;
 import com.example.pim.models.enums.TecEnums.TecLevelEnum;
 import com.example.pim.repositorys.TecRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

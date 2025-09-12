@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=GestaoDeChamados;encrypt=false
+    url: jdbc:sqlserver://localhost:1433;databaseName=pim;encrypt=false
     username: sa
     password: 123
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
